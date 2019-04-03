@@ -3,7 +3,7 @@ const Users = require('./users-model.js');
 
 
 // GET /api/users
-router.get('/', withRole('staff'), (req, res) => {
+router.get('/', withRole(2), (req, res) => {
   Users.find()
     .then(users => {
       res.json(users);
@@ -11,12 +11,12 @@ router.get('/', withRole('staff'), (req, res) => {
     .catch(error => res.send(error));
 });
 
-function withRole(role) {
+function withRole(power) {
   return function(req, res, next) {
     if (
       req.decodedJwt &&
-      req.decodedJwt.roles &&
-      req.decodedJwt.roles.includes(role)
+      req.decodedJwt.role &&
+      req.decodedJwt.role === power
     ) {
       next();
     } else {
