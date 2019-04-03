@@ -1,5 +1,15 @@
 # Authentication using JSON Web Tokens (JWTs)
 
+# Notes on Application
+- Set role of user at registration (default: 1)
+- Roles are integers. 1 is user level. 2 is admin level. 
+- Get requests for users are only available to level 2 accounts.
+- Get requests from users at level 1 automatically return only the logged in users information
+- Get requests filter 1 to user, 2 to admin strings
+- Why do we check to see if the password is hashed before it is saved at the GET /api/users endpoint? Why not do that at login or register? 
+
+
+
 ## Topics
 
 - Authentication.

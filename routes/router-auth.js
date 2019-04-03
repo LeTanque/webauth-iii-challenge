@@ -10,8 +10,7 @@ const Users = require('./users-model.js');
 // POST /api/register
 router.post('/register', (req, res) => {
     let user = req.body;
-    // console.log(user)
-    const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
+    const hash = bcrypt.hashSync(user.password, 10); 
     user.password = hash;
     Users.add(user)
         .then(saved => {
@@ -25,6 +24,9 @@ router.post('/register', (req, res) => {
 
 // POST /api/login
 router.post('/login', (req, res) => {
+    if (!req.body.username || !req.body.password) {
+        return res.status(400).json({ message:"Username and password required" })
+    }
     let { username, password } = req.body;
     Users.findBy({ username })
         .first()
@@ -36,7 +38,7 @@ router.post('/login', (req, res) => {
                     token,
                 });
             } else {
-                res.status(401).json({ message: 'Invalid Credentials' });
+                res.status(401).json({ message: 'You shall not pass!' });
             }
         })
         .catch(error => {
