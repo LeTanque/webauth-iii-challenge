@@ -5,6 +5,12 @@ const jwt = require('jsonwebtoken');
 const secret = require('../auth/secrets').jwtSecret; 
 const Users = require('./users-model.js');
 
+const errors = { // J.Pinkman Dynamic error messaging based on sqlite codes 
+    '1': 'We ran into an error, yo! I dunno!',
+    '4': 'Operation aborted, yo!',
+    '9': 'Operation aborted, yo!',
+    '19': 'Another record with that value exists, yo!'
+};
 
 
 // POST /api/register
@@ -17,7 +23,8 @@ router.post('/register', (req, res) => {
             res.status(201).json(saved);
         })
         .catch(error => {
-            res.status(500).json(error);
+            const message = errors[error.errno] || 'We ran into an error, yo! Crazy!';
+            res.status(500).json({ message });
         });
 });
 
@@ -42,7 +49,8 @@ router.post('/login', (req, res) => {
             }
         })
         .catch(error => {
-            res.status(500).json(error);
+            const message = errors[error.errno] || 'We ran into an error, yo! Crazy!';
+            res.status(500).json({ message });
         });
 });
 
